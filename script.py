@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 import pprint
 
 # Result is a nested dict
@@ -24,5 +25,3 @@ for file_name in os.listdir():
                 # PeakID : { Other Values }
                 result[file_name][key] = row
 
-pp = pprint.PrettyPrinter(indent=4)
-pp.pprint(result['Botcheve_IMR90.anno'])
