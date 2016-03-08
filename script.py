@@ -28,7 +28,7 @@ def main():
 
     return anno_dict
 
-def search(search_words, anno_dict):
+def search_word(search_words, anno_dict):
     # search_results is a nested dict
     # First key is the search word to find
     # Second key is the file name
@@ -53,10 +53,24 @@ def search(search_words, anno_dict):
 
     return search_results
 
+def search_gene(gene_name, anno_dict):
+    genes = {}
+
+    for file_name, peak_ids in anno_dict.items():
+        genes[file_name] = []
+        for peak_id, fields in peak_ids.items():
+            if gene_name == fields['Gene Name']:
+                genes[file_name].append(peak_ids[peak_id])
+
+    return genes
+
 
 if __name__ == "__main__":
+    pp = pprint.PrettyPrinter(indent=4)
+
     anno_dict = main()
-    search_results = search(['non-coding',
+
+    search_results = search_word(['non-coding',
                              'intergenic',
                              'intron',
                              'exon',
@@ -65,6 +79,8 @@ if __name__ == "__main__":
                              '5’ UTR',
                              '3’ UTR'],
                               anno_dict)
+
+    search_gene_results = search_gene('TPI1P3', anno_dict)
     
-    pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(search_results)
+    pp.pprint(search_gene_results)
