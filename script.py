@@ -54,6 +54,9 @@ def search_word(search_words, anno_dict):
     return search_results
 
 def search_gene(gene_name, anno_dict):
+    # genes is a dict of lists
+    # First key is the filename
+    # Lists is the found row with the matching gene_name
     genes = {}
 
     for file_name, peak_ids in anno_dict.items():
