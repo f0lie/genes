@@ -2,18 +2,17 @@ import csv
 import os
 import re
 import pprint
+import collections
 
 def get_genes(file_extension='.anno', dir='.'):
     # gene_dict is a nested dict
     # First key is the filename
     # Second key is the PeakID
     # Values is the rest of the fields
-    gene_dict = {}
+    gene_dict = collections.defaultdict(dict)
 
     for file_name in os.listdir(dir):
         if file_name.endswith(file_extension):
-            gene_dict[file_name] = {}
-
             with open(file_name) as file_anno:
                 # PeakID field has extra 'junk' so extra processing is needed
                 fields = file_anno.readline().split('\t')
@@ -30,26 +29,21 @@ def get_genes(file_extension='.anno', dir='.'):
 
 def search_word(search_words, gene_dict):
     # search_results is a nested dict
-    # First key is the search word to find
-    # Second key is the file name
+    # First key is the file name
+    # Second key is the searched term
     # Values is the number of hits
-    search_results = {}
+    search_results = collections.defaultdict(dict)
 
     for search_word in search_words:
-        search_results[search_word] = {}
-
         for file_name, peak_ids in gene_dict.items():
-            pattern = re.compile(search_word)
-            hits = 0
+            search_results[file_name][search_word] = 0
 
             for fields in peak_ids.values():
                 # Combine all values so it is a 'row'
                 fields_str = ' '.join(fields.values())
 
-                if pattern.search(fields_str) is not None:
-                    hits += 1
-
-            search_results[search_word][file_name] = hits
+                if re.search(search_word, fields_str) is not None:
+                    search_results[file_name][search_word] += 1
 
     return search_results
 
@@ -57,10 +51,9 @@ def search_field(gene_dict, field, value):
     # values_found is a dict of lists which contain the found value
     # First key is the filename
     # Lists is the found row with the matching value
-    values_found = {}
+    values_found = collections.defaultdict(list)
 
     for file_name, peak_ids in gene_dict.items():
-        values_found[file_name] = []
         for peak_id, fields in peak_ids.items():
             if value == fields[field]:
                 values_found[file_name].append(peak_ids[peak_id])
@@ -85,5 +78,5 @@ if __name__ == "__main__":
 
     search_gene_results = search_field(gene_dict, 'Gene Name', 'TPI1P3')
     
-    pp.pprint(search_results)
-    pp.pprint(search_gene_results)
+    pp.pprint(dict(search_results))
+    pp.pprint(dict(search_gene_results))
