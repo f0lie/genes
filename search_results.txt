@@ -1,0 +1,5 @@
+filename	non-coding	intergenic	intron	exon	promoter-TSS	TTS	5’ UTR	3’ UTR
+Akdemir_p53_DOX.anno	38	155	1898	262	423	66	0	0
+Botcheve_IMR90.anno	9	14	233	85	176	8	0	0
+Younger_Human_ChIP.anno	10	64	1145	75	72	31	0	0
+Akdemir_p53_Untr.anno	34	128	1453	308	802	66	0	0
