@@ -66,17 +66,32 @@ if __name__ == "__main__":
 
     gene_dict = get_genes()
 
-    search_results = search_word(['non-coding',
-                             'intergenic',
-                             'intron',
-                             'exon',
-                             'promoter-TSS',
-                             'TTS',
-                             '5’ UTR',
-                             '3’ UTR'],
-                              gene_dict)
+    search_words = ['non-coding',
+                    'intergenic',
+                    'intron',
+                     'exon',
+                     'promoter-TSS',
+                     'TTS',
+                     '5’ UTR',
+                     '3’ UTR']
+    search_results = search_word(search_words, gene_dict)
 
     search_gene_results = search_field(gene_dict, 'Gene Name', 'TPI1P3')
-    
-    pp.pprint(dict(search_results))
-    pp.pprint(dict(search_gene_results))
+
+    with open('search_results.txt', 'w') as out_file:
+        writer = csv.DictWriter(out_file, delimiter='\t',
+                                fieldnames=['filename'] + search_words)
+        writer.writeheader()
+        for filename, results in search_results.items():
+            results['filename'] = filename
+            writer.writerow(results)
+
+    with open('search_gene_results.txt', 'w') as out_file:
+        fields = list(list(search_gene_results.values())[0][0].keys())
+        writer = csv.DictWriter(out_file, delimiter='\t',
+                                fieldnames=['filename'] + fields)
+        writer.writeheader()
+        for filename, results in search_gene_results.items():
+            for result in results:
+                result['filename'] = filename
+                writer.writerow(result)
