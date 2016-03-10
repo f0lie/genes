@@ -1,5 +1,0 @@
-filename	Start	Entrez ID	Focus Ratio/Region Size	Peak Score	Nearest Unigene	End	"Gene Type
-"	Nearest Ensembl	Gene Description	Strand	Annotation	Nearest PromoterID	Nearest Refseq	Chr	Distance to TSS	Gene Alias	Gene Name	Detailed Annotation
-Akdemir_p53_DOX.anno	115498486	728402	NA	3169.40	Hs.729953	115499616	pseudo		triosephosphate isomerase 1 pseudogene 3	+	Intergenic	NR_027338	NR_027338	chr6	-967536	-	TPI1P3	LTR10B1|LTR|ERV1
-Younger_Human_ChIP.anno	115391882	728402	NA	0	Hs.729953	115392565	pseudo		triosephosphate isomerase 1 pseudogene 3	+	Intergenic	NR_027338	NR_027338	chr6	-967671	-	TPI1P3	LTR10B1|LTR|ERV1
-Akdemir_p53_Untr.anno	115498592	728402	NA	695.62	Hs.729953	115499304	pseudo		triosephosphate isomerase 1 pseudogene 3	+	Intergenic	NR_027338	NR_027338	chr6	-967639	-	TPI1P3	LTR10B1|LTR|ERV1
