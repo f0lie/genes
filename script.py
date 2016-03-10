@@ -3,16 +3,16 @@ import os
 import re
 import pprint
 
-def main():
-    # anno_dict is a nested dict
+def get_genes(file_extension='.anno'):
+    # gene_dict is a nested dict
     # First key is the filename
     # Second key is the PeakID
     # Values is the rest of the fields
-    anno_dict = {}
+    gene_dict = {}
 
     for file_name in os.listdir():
-        if file_name.endswith(".anno"):
-            anno_dict[file_name] = {}
+        if file_name.endswith(file_extension):
+            gene_dict[file_name] = {}
 
             with open(file_name) as file_anno:
                 # PeakID field has extra 'junk' so extra processing is needed
@@ -24,11 +24,11 @@ def main():
                     # Get value of PeakID and remove it from values
                     key = row.pop('PeakID')
                     # PeakID : { Other Values }
-                    anno_dict[file_name][key] = row
+                    gene_dict[file_name][key] = row
 
-    return anno_dict
+    return gene_dict
 
-def search_word(search_words, anno_dict):
+def search_word(search_words, gene_dict):
     # search_results is a nested dict
     # First key is the search word to find
     # Second key is the file name
@@ -38,7 +38,7 @@ def search_word(search_words, anno_dict):
     for search_word in search_words:
         search_results[search_word] = {}
 
-        for file_name, peak_ids in anno_dict.items():
+        for file_name, peak_ids in gene_dict.items():
             pattern = re.compile(search_word)
             hits = 0
 
@@ -53,13 +53,13 @@ def search_word(search_words, anno_dict):
 
     return search_results
 
-def search_gene(gene_name, anno_dict):
+def search_gene(gene_name, gene_dict):
     # genes is a dict of lists
     # First key is the filename
     # Lists is the found row with the matching gene_name
     genes = {}
 
-    for file_name, peak_ids in anno_dict.items():
+    for file_name, peak_ids in gene_dict.items():
         genes[file_name] = []
         for peak_id, fields in peak_ids.items():
             if gene_name == fields['Gene Name']:
@@ -71,7 +71,7 @@ def search_gene(gene_name, anno_dict):
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
 
-    anno_dict = main()
+    gene_dict = main()
 
     search_results = search_word(['non-coding',
                              'intergenic',
@@ -81,9 +81,9 @@ if __name__ == "__main__":
                              'TTS',
                              '5’ UTR',
                              '3’ UTR'],
-                              anno_dict)
+                              gene_dict)
 
-    search_gene_results = search_gene('TPI1P3', anno_dict)
+    search_gene_results = search_gene('TPI1P3', gene_dict)
     
     pp.pprint(search_results)
     pp.pprint(search_gene_results)
